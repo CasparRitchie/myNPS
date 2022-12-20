@@ -1,0 +1,10 @@
+{
+    "port": 80,
+    "basePath": "/api",
+    "mysqlHost": "127.0.0.1",
+    "mysqlUsername": "root",
+    "mysqlPassword": "root",
+    "mysqlDatabase": "mynps",
+    "jwtPass": "ilfautecrireunmottreslongpouraiderlecryptagedesdonneesparjwt",
+    "jwtExpireLength": "1 hour"
+}
