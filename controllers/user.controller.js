@@ -16,7 +16,7 @@ const add = async (data) => {
     return getById(req.insertId);
 };
 const getAll = async () => {
-    const [users, err] = await db.query("SELECT * FROM users");
+    const [users, err] = await db.query("SELECT id, salutation, first_name, last_name, date_of_birth, email, nationality, created_date, `role` FROM users");
     return users;
 };
 const getById = async (id) => {
@@ -62,11 +62,11 @@ const remove = async (id) => {
     return true;
 };
 
+
 module.exports = {
     add,
     getAll,
     getById,
     update,
     remove,
-
-};
+  };

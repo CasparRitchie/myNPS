@@ -45,4 +45,24 @@ router.route('/:id')
                 }
     })
 ;
-        module.exports = router;
+router.route('/ShowChart')
+    .get(async (req, res) => {
+        const surveys = await surveyController.getAll();
+            if (!surveys) {
+                res.status(404).json();
+            }
+            res.status(200).json(surveys);
+    })
+
+    // Je crée un "show" pour le nouveau complexe fonction pour les données NPS
+router.route('/ShowChartData')    
+    .get(async (req, res) => {
+        const surveys = await surveyController.getAll();
+            if (!surveys) {
+                res.status(404).json();
+            }
+            res.status(200).json(surveys);
+    })
+        
+        
+    module.exports = router;

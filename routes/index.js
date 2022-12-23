@@ -12,6 +12,8 @@ const router = express.Router();
 // "http;//localhost/api/surveys"
 router.use('/users', userRoute);
 router.use('/surveys', surveyRoute);
+router.use('/surveys/ShowChart', surveyRoute);
+router.use('/surveys/ShowChartData', surveyRoute);
 
 // j'exporte le router pour le rendre accessible avec un require
 // dans app.js si on fait "const router : require('./routes')",
