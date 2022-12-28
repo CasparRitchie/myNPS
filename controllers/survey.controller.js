@@ -12,10 +12,16 @@ const add = async (data) => {
     // une fois que l'ajout de sondage a été réussi, j'appelle la fonction getById pour récuperer le ID du nouvel sondage 
     return getById(req.insertId);
 }; 
-const getAll = async () => {
-    const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
+
+const getAll = async (auth) => {
+    if (auth.roles == 'admin') {
+        const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
     return surveys;
-}; 
+    } else {
+        const [response, err] = await db.query("SELECT * FROM surveys where id_users_submit_survey = ?", [auth.id])
+    }
+};
+
 const getById = async (id) => {
     const [survey, err] = await db.query("SELECT * FROM surveyResponses WHERE id = ?", [id]);
     if(!survey || survey.length == 0) {
@@ -45,12 +51,9 @@ const getNPSData = async () => {
             WHERE s.month = month AND rating BETWEEN 0 AND 6)
             ) OVER (ORDER BY month ROWS BETWEEN 11 PRECEDING AND CURRENT ROW) AS rolling_average_nps,
             -- Calculate the percentage of Promoters for the current month
-    (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM survey_responses WHERE month = s.month)
-     FROM survey_responses s
-     WHERE s.month = month AND rating BETWEEN 9 AND 10) AS promoters,
+            (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM survey_responses WHERE month = s.month)FROM survey_responses s WHERE s.month = month AND rating BETWEEN 9 AND 10) AS promoters,
      -- Calculate the percentage of Passives for the current month
-     (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM survey_responses WHERE month = s.month)
-     FROM survey_responses s
+     (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM survey_responses WHERE month = s.month) FROM survey_responses s
      WHERE s.month = month AND rating BETWEEN 7 AND 8) AS passives,
      -- Calculate the percentage of Detractors for the current month
      (SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM survey_responses WHERE month = s.month)
@@ -63,12 +66,12 @@ const getNPSData = async () => {
          `);
          return rows;
         };
-
+    
 // j'exporte mes fonctions
 module.exports = {
     getAll,
     getById,
     add,
-    getNPSData,
+    getNPSData
 
 };

@@ -1,7 +1,9 @@
 const express = require('express');
 
 const surveyController = require('../controllers/survey.controller');
-
+const surveySchema = require('../models/survey');
+const validator = require('../utils/validator');
+const authValidator = require('../utils/auth');
 const router = express.Router();
 // je définis les routes qui vont se situer sur "/"
 
@@ -26,12 +28,14 @@ router.route('/')
     // pour les routes ou il faut savoir duquel survey on parle
     // et toutes ces routes seront sur le chemin "/:id"
 router.route('/:id')
-    .get(async (req, res) => {
+    .get(authValidator.isAuth(), async (req, res) => {
         const survey = await surveyController.getById(req.params.id);
         if (!survey) {
             res.status(404).json();
+        }
+        if (req.auth.roles != "admin" && (survey.user_id != req.auth.id)) {
+            res.status(403).json({message: "This isn't your survey"});
         } else {
-
             res.status(200).json(survey);
         }
     })

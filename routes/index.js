@@ -3,6 +3,7 @@ const express = require('express');
 
 const userRoute = require('./user.route');
 const surveyRoute = require('./survey.route');
+const authRoute = require('./auth.route');
 
 // j'appelle le router de Express comme j'ai fait sur app.js
 const router = express.Router();
@@ -14,6 +15,7 @@ router.use('/users', userRoute);
 router.use('/surveys', surveyRoute);
 router.use('/surveys/ShowChart', surveyRoute);
 router.use('/surveys/ShowChartData', surveyRoute);
+router.use('/login', authRoute);
 
 // j'exporte le router pour le rendre accessible avec un require
 // dans app.js si on fait "const router : require('./routes')",

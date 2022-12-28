@@ -6,5 +6,5 @@
     "mysqlPassword": "root",
     "mysqlDatabase": "mynps",
     "jwtPass": "ilfautecrireunmottreslongpouraiderlecryptagedesdonneesparjwt",
-    "jwtExpireLength": "1 hour"
+    "jwtExpireLength": "1 year"
 }

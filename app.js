@@ -31,5 +31,5 @@ app.use(config.basePath, routes);
 
 // je dis a mon serveur Express de regarder le port - infos dans config.json pour fonctionner sur le port 80 - port par defaut de http.
 app.listen(config.port, () => {
-  console.log("mynps app listening on port " + config.port);
+  console.log("mynps app up and server listening on port " + config.port);
 });
