@@ -1,38 +1,41 @@
+
 const express = require('express');
+// Importation du contrôleur des users
 const userController = require('../controllers/user.controller');
+// Création d'un nouvel objet de routeur avec Express
 const router = express.Router();
 
 router.route('/')
-  .get(async (req, res) => {
-    try {
-      // Call the getAll method in the user controller
-      const users = await userController.getAll();
-      // If no users are found, return a 404 Not Found error
-      if (!users) {
-        res.status(404).json();
-      } else {
-        // Otherwise, return a 200 OK response with the users data
-        res.status(200).json(users);
-      }
-    } catch (err) {
-      // If an error occurs, log the error and return a 500 Internal Server Error response
-      console.error(err);
-      res.status(500).json({ message: 'An error occurred while processing the request' });
-    }
+.get(async (req, res) => {
+  try {
+  // Appel de la méthode getAll dans le contrôleur d'utilisateur
+  const users = await userController.getAll();
+  // Si aucun utilisateur n'est trouvé, renvoyer une erreur 404 Not Found
+  if (!users) {
+  res.status(404).json();
+  } else {
+  // Sinon, renvoyer une réponse 200 OK avec les données d'utilisateur
+  res.status(200).json(users);
+  }
+  } catch (err) {
+  // Si une erreur se produit, enregistrer l'erreur et renvoyer une réponse 500 Internal Server Error
+  console.error(err);
+  res.status(500).json({ message: 'An error occurred while processing the request' });
+  }
   })
   .post(async (req, res) => {
     try {
-      // Add a new user to the database
+      // Ajouter un user dans la base de données 
       const new_user = await userController.add(req.body);
-      // If no user was added, return a 404 Not Found error
+      // Si l'utilisateur n'a pas été ajouté, return un erreur 404 Not Found
       if (!new_user) {
         res.status(404).json();
       } else {
-        // Otherwise, return a 201 Created response with the new user data
+        // Sinon, return un 201 "Created" avec les infos du nouvel utilisateur
         res.status(201).json(new_user);
       }
     } catch (err) {
-      // If an error occurs, log the error and return a 500 Internal Server Error response
+      // Si erreur, log le et return un 500 Internal Server Error
       console.error(err);
       res.status(500).json({ message: 'An error occurred while processing the request' });
     }
@@ -41,48 +44,48 @@ router.route('/')
 router.route('/:id')
     .get(async (req, res) => {
     try {
-      // Get a single user by ID
+      // Cherche un utilisateur par son ID
       const user = await userController.getById(req.params.id);
-      // If no user is found, return a 404 Not Found error
+      // Si user pas trouvé, return un 404 Not Found 
       if (!user) {
         res.status(404).json();
         console.log("User not found");
       } else {
-        // Otherwise, return a 200 OK response with the user data
+        // Sinon return un 200 OK avec les données utlisateur
         res.status(200).json(user);
       }
     } catch (err) {
-      // If an error occurs, log the error and return a 500 Internal Server Error response
+      // Si erreur, log le et return un 500 Internal Server Error
       console.error(err);
       res.status(500).json({ message: 'An error occurred while processing the request' });
     }
     })
     .patch(async (req, res) => {
     try {
-      // Update a single user by ID
+      // Mise à jour d'un user par ID
       const user = await userController.update(req.params.id, req.body);
-      // If no user is found, return a 404 Not Found error
+      // Si pas d'utilisateur trouvé, return un 404 Not Found
       if (!user) {
         res.status(404).json();
       }
-      // Otherwise, return a 200 OK response with the updated user data
+      // Sinon return un 200 OK response avec les infos mises a jour
       res.status(200).json(user);
     } catch (err) {
-      // If an error occurs, log the error and return a 500 Internal Server Error response
+      // Si erreur, log le et return un 500 Internal Server Error
       console.error
     .delete(async (req, res) => {
     try {
-          // Delete a single user by ID
+          // Supprimer un single user par ID
             const user = await userController.remove(req.params.id);
-          // If no user is found, return a 404 Not Found error
-            if (!user) {
+      // Si pas d'utilisateur trouvé, return un 404 Not Found
+      if (!user) {
             res.status(404).json();
             }
-          // Otherwise, return a 204 No Content response
+          // Sinon, return un 204 No Content 
             res.status(204).json();
             } catch (err) {
-            // If an error occurs, log the error and return a 500 Internal Server Error response
-                console.error(err);
+      // Si erreur, log le et return un 500 Internal Server Error
+      console.error(err);
                 res.status(500).json({ message: 'An error occurred while processing the request' });
             }
         })

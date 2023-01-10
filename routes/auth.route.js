@@ -31,7 +31,6 @@ router.route('/')
   .post(validator(userSchema), async (req, res) => {
     // verifier l'existence d'un user dans le database avec cet email et password
     let user = await userController.getByEmailAndPassword(req.body);
-
     // si pas d'user trouvé, return un 401 Unauthorized error
     if (!user) {
       res.status(401).json({message: "Hmm that doesn't seem to be the right username & password combination"});
