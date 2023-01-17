@@ -17,7 +17,7 @@ const app = express();
 
 // j'applique les middlewares, morgan et cors, morgan pour les logs dans le console pour aider a débugger
 app.use(morgan('dev'));
-
+  
 // deuxieme middleware cors pour gerer les en-têtes HHTP cross origin resource sharing:  (https://developer.mozilla.org/fr/docs/Glossary/CORS) pour permettre à utiliser plus que POST GET et HEAD sans etre refuse par le serveur
 app.use(cors());
 

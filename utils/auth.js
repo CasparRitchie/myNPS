@@ -43,7 +43,7 @@ const header = req.headers.authorization;
             if (err) {
                 res.status(401).json({message: "Invalid JWT"});
             // Si le token est valide, on vérifie si l'utilisateur a le rôle "admin" dans son token.
-            } else if (decodedToken.roles == 'admin') {
+            } else if (decodedToken.role == 'admin') {
             // Si oui, on ajoute le token décodé avec les données de l'utilisateur dans l'objet "req".
             req.auth = decodedToken,
                 // On appelle la fonction "next" pour passer à la prochaine étape du middleware.

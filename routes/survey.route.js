@@ -36,34 +36,34 @@ router.route('/')
         // pour les routes ou il faut savoir duquel survey on parle
         // et toutes ces routes seront sur le chemin "/:id"
         
-        router.route('/:id')
-        // on appelle la fonction getById
-        // Methode HTTP GET pour cette requete Récupération d'une enquête spécifique en fonction de son identifiant
-        .get(authValidator.isAuth(), async (req, res) => {
-            const survey = await surveyController.getById(req.params.id);
-            // Si aucune enquête n'a été trouvée
-            if (!survey) {
-                // Avec cet identifiant, la fonction renvoie null, ce qui déclenche l'envoi d'une erreur 404.
-                res.status(404).json();
-            }
-            // Si l'utilisateur n'est pas administrateur et que l'ID de l'utilisateur dans l'enquête ne correspond pas à l'ID de l'utilisateur connecté, renvoie un statut 403 avec un message d'erreur
-            if (req.auth.roles != "admin" && (survey.user_id != req.auth.id)) {
-            res.status(403).json({message: "This isn't your survey"});
+    router.route('/:id')
+    // on appelle la fonction getById
+    // Methode HTTP GET pour cette requete Récupération d'une enquête spécifique en fonction de son identifiant
+    .get(authValidator.isAuth(), async (req, res) => {
+        const survey = await surveyController.getById(req.params.id);
+        // Si aucune enquête n'a été trouvée
+        if (!survey) {
+            // Avec cet identifiant, la fonction renvoie null, ce qui déclenche l'envoi d'une erreur 404.
+            res.status(404).json();
+        }
+        // Si l'utilisateur n'est pas administrateur et que l'ID de l'utilisateur dans l'enquête ne correspond pas à l'ID de l'utilisateur connecté, renvoie un statut 403 avec un message d'erreur
+        if (req.auth.roles != "admin" || (survey.user_id != req.auth.id)) {
+        res.status(403).json({message: "This isn't your survey"});
         } else {
         // Si l'enquête est trouvée et que l'utilisateur a les droits d'accès, renvoie un statut 200 avec l'enquête
             res.status(200).json(survey);
         }
     })
-    // Supprime l'enquête en fonction de son ID
-    .delete(async (req, res) => {
-        // Appelle la fonction remove du controlleur de l'enquête avec l'ID de l'enquête récupéré dans l'URL
-        const survey = await surveyController.remove(req.params.id)
-        if(!survey) {
-            res.status(404).json();
-                } else {
+// Supprime l'enquête en fonction de son ID
+.delete(async (req, res) => {
+    // Appelle la fonction remove du controlleur de l'enquête avec l'ID de l'enquête récupéré dans l'URL
+    const survey = await surveyController.remove(req.params.id)
+    if(!survey) {
+        res.status(404).json();
+            } else {
 
-                    res.status(202).json()
-                }
+                res.status(202).json()
+            }
     })
 ;
 router.route('/ShowChart')
@@ -75,9 +75,10 @@ const surveys = await surveyController.getAll();
 if (!surveys) {
 // On renvoie un code d'erreur 404 avec une réponse vide
 res.status(404).json();
+} else {
+    // Si on récupère des sondages, on renvoie un code de succès 200 et la liste de sondages
+    res.status(200).json(surveys);
 }
-// Si on récupère des sondages, on renvoie un code de succès 200 et la liste de sondages
-res.status(200).json(surveys);
 })
 
     // Je crée un "show" pour le nouveau complexe fonction pour les données NPS

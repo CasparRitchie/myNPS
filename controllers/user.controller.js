@@ -18,7 +18,17 @@ const add = async (data) => {
 // Si la requête d'insertion a réussi, on appelle la fonction getById pour récupérer le ID du nouvel utilisateur
     return getById(req.insertId);
 };
+const addAdmin = async (data) => {
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const [req, err] = await db.query("INSERT INTO users (email, password, roles) VALUES (?, ?, ?)", [data.email, data.password, "admin"]);
+    if (!req) {
+        return null;
+    }
+    // Une fois un user ajouté en base, on appelle la fonction getById, créée plus haut, qui permet d'aller
+    // récupérer en base le user nouvellement créé, sans réécrire la fonction "SELECT * FROM users"
+    return getById(req.insertId);
 
+};
 const getAll = async () => {
 // Je sélectionne tous les champs de la table users
     const [users, err] = await db.query("SELECT id, salutation, first_name, last_name, date_of_birth, email, nationality, created_date, role FROM users");
@@ -109,7 +119,7 @@ const getByEmailAndPassword = async (data) => {
 
 const getByEmail = async (data) => {
     // On effectue une requête pour récupérer l'utilisateur avec l'email spécifié
-    const [user, err] = await db.query("SELECT * FROM users WHERE email = ?", [data.email]);
+    const [user, err] = await db.query("SELECT * FROM users WHERE email = ? LIMIT 1", [data.email]);
     // Si aucun utilisateur n'a été trouvé, on renvoie null
     if (!user || user.length == 0) {
     return null;
@@ -120,6 +130,7 @@ const getByEmail = async (data) => {
 // On exporte toutes les fonctions définies dans ce fichier afin de pouvoir les utiliser dans d'autres fichiers de l'application.
 module.exports = {
     add,
+    addAdmin,
     getAll,
     getById,
     update,

@@ -18,36 +18,43 @@
       // une fois que l'ajout de sondage a été réussi, j'appelle la fonction getById pour récuperer le ID du nouvel sondage 
       return getById(req.insertId);
   }
+  
+  // ********* vieux fonction pour checker si ca marche le getAll tout simple ******
+  const getAll = async () => {
+    const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
+    return surveys;
+}; 
+// ******* fin de vieux fonction *******
 
   // Fonction pour récupérer tous les sondages de la base de données
-  const getAll = async (auth) => {
-      try {
-        // Si l'utilisateur a le rôle d'admin ou de user, j'autorise la récupération de tous les sondages
+  // const getAll = async (auth) => {
+  //     try {
+  //       // Si l'utilisateur a le rôle d'admin ou de user, j'autorise la récupération de tous les sondages
 
-        if (auth.roles == 'admin' || 'user') {
-          const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
-          if (err) {
-            throw new Error(err);
-          }
-          return surveys;
-          // Sinon, je n'autorise la récupération que des sondages soumis par l'utilisateur en question
+  //       if (auth.role === 'admin' || (survey.user_id == req.auth.id)) {
+  //         const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
+  //         if (err) {
+  //           throw new Error(err);
+  //         }
+  //         return surveys;
+  //         // Sinon, je n'autorise la récupération que des sondages soumis par l'utilisateur en question
 
-        } else {
-          const [response, err] = await db.query("SELECT * FROM surveys where id_users_submit_survey = ?", [auth.id])
-          if (err) {
-            throw new Error(err);
-          }
-          return response;
-        }
-      } catch (error) {
-        console.error(error);
-        console.log("An error occurred fetching survey data")
-        return {
-          success: false,
-          message: "An error occurred while trying to fetch the survey data from the database"
-        };
-      }
-    }
+  //       } else {
+  //         const [response, err] = await db.query("SELECT * FROM surveyResponses where id_users_submit_survey = ?", [auth.id])
+  //         if (err) {
+  //           throw new Error(err);
+  //         }
+  //         return response;
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //       console.log("An error occurred fetching survey data")
+  //       return {
+  //         success: false,
+  //         message: "An error occurred while trying to fetch the survey data from the database"
+  //       };
+  //     }
+  //   }
     
     const getById = async (id) => {
       // On exécute une requête SQL qui sélectionne tous les champs de la table surveyResponses où l'ID est égal à l'ID passé en paramètre
