@@ -43,7 +43,6 @@ router.route('/')
 
 router.route('/:id')
     .get(async (req, res) => {
-    try {
       // Cherche un utilisateur par son ID
       const user = await userController.getById(req.params.id);
       // Si user pas trouvé, return un 404 Not Found 
@@ -54,11 +53,6 @@ router.route('/:id')
         // Sinon return un 200 OK avec les données utlisateur
         res.status(200).json(user);
       }
-    } catch (err) {
-      // Si erreur, log le et return un 500 Internal Server Error
-      console.error(err);
-      res.status(500).json({ message: 'An error occurred while processing the request' });
-    }
     })
     .patch(async (req, res) => {
     try {

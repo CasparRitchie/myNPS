@@ -5,7 +5,6 @@ const isAuth = () => {
     return (req, res, next) => {
         // je lis les headers
         const header = req.headers.authorization;
-        console.log(header);
 
         if (!header) {
             res.status(401).json({message: "You need to be logged in to see this page"});
@@ -20,6 +19,8 @@ const isAuth = () => {
             } else {
                 //je rajoute les données utilisateurs du token décode dans le request
                 req.auth = decodedToken;
+                // console.log("****** decoded token info to follow ******");
+                // console.log(decodedToken);
 // next = je permet de passer à la suite de la requete
                 next();
             }
@@ -32,12 +33,16 @@ const isAdmin = () => {
     return (req, res, next) => {
 // On récupère l'en-tête "Authorization" de la requête.
 const header = req.headers.authorization;
+// console.log("***** req headers auth coming up");
+// console.log(req.headers.authorization);
     // Si l'en-tête "Authorization" n'est pas présent, on renvoie une erreur 401 (non autorisé).
         if (!header) {
             res.status(401).json({message: "You need to be connected to do this"});
         }
         // On récupère le token d'accès contenu dans l'en-tête "Authorization".
-        const access_token =  header.split(" ")[1];
+        console.log("***header info upcoming***");
+        console.log(header);
+        const access_token = header.split(" ")[1];
         // On utilise la fonction "verify" de l'objet JWT pour vérifier la validité du token.
         jwt.verify(access_token, config.jwtPass, (err, decodedToken) => {
         // Si le token est invalide, on renvoie une erreur 401 (non autorisé).
@@ -49,6 +54,7 @@ const header = req.headers.authorization;
             req.auth = decodedToken,
                 // On appelle la fonction "next" pour passer à la prochaine étape du middleware.
                 // je verifie que le user a le role "admin" dans son token pour permettre cet activité
+                // console.log("admin user logged in");
                 next();
             } else {
                 // Si l'utilisateur n'a pas le rôle "admin", on renvoie une erreur 401 (non autorisé).

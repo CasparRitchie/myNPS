@@ -39,16 +39,18 @@ router.route('/')
     router.route('/:id')
     // on appelle la fonction getById
     // Methode HTTP GET pour cette requete Récupération d'une enquête spécifique en fonction de son identifiant
-    .get(async (req, res) => {
+    .get(authValidator.isAuth(), async (req, res) => {
         const survey = await surveyController.getById(req.params.id);
-        // Si aucune enquête n'a été trouvée
-        if (!survey) {
-            res.status(404).json();
-        }
+        if (req.auth.role != "admin" && (survey.user_id != req.auth.id)) {
+            res.status(403).json({message: "C'est pas ton sondage"});
+            // Si aucune enquête n'a été trouvée
+        } else if (!survey) {
+                res.status(404).json();
+        } else {
         // Si l'enquête est trouvée et que l'utilisateur a les droits d'accès, renvoie un statut 200 avec l'enquête
             res.status(200).json(survey);
         }
-    )
+    })
 // Supprime l'enquête en fonction de son ID
 .delete(async (req, res) => {
     // Appelle la fonction remove du controlleur de l'enquête avec l'ID de l'enquête récupéré dans l'URL

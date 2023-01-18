@@ -10,6 +10,7 @@
       // La fonction "query" retourne un tableau avec deux éléments : la requête et une erreur (s'il y en a une)
 
       const [req, err] = await db.query("INSERT INTO surveyResponses (score, comment, submitted_date, id_users_submit_survey) VALUES (?,?, ?, ?)",
+      // **** need to add user id here ****
       [data.score, data.comment, dateNow, 1]);
       // Si la requête échoue, on retourne "null"
       if(!req) {      
@@ -17,13 +18,22 @@
       }
       // une fois que l'ajout de sondage a été réussi, j'appelle la fonction getById pour récuperer le ID du nouvel sondage 
       return getById(req.insertId);
-  }
-  
-  // ********* vieux fonction pour checker si ca marche le getAll tout simple ******
+  };
+  // *****test original function *****
   const getAll = async () => {
     const [surveys, err] = await db.query("SELECT * FROM surveyResponses ORDER BY submitted_date DESC");
     return surveys;
-}; 
+};
+  // ********* vieux fonction pour checker si ca marche le getAll tout simple ******
+//   const getAll = async (auth) => {
+//     if (auth.role == 'admin') {
+//       const [surveys, err] = await db.query("SELECT * FROM surveyResponses ORDER BY submitted_date DESC");
+//       return surveys;
+//     } else {
+//       const [surveys, err] = await db.query("SELECT * FROM surveyResponses WHERE id_users_submit_survey = ? ORDER BY submitted_date DESC", [auth.id]);
+//      return surveys;
+//     }
+// }; 
 // ******* fin de vieux fonction *******
 
   // Fonction pour récupérer tous les sondages de la base de données
@@ -65,7 +75,7 @@
       }
       // Sinon, on retourne le premier élément du tableau (il ne devrait y en avoir qu'un seul puisque l'ID est unique)
       return survey[0];
-    } 
+    } ;
     
 
   const getNPSData = async () => {
