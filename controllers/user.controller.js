@@ -71,7 +71,7 @@ const update = async (id, data) => {
             // data.date_of_birth || user.date_of_birth,
             data.email || user.email, 
             password,
-            id
+            id,
         ]);
         if (!req) {
             return null;

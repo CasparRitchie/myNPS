@@ -21,7 +21,7 @@
   
   // ********* vieux fonction pour checker si ca marche le getAll tout simple ******
   const getAll = async () => {
-    const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
+    const [surveys, err] = await db.query("SELECT * FROM surveyResponses ORDER BY submitted_date DESC");
     return surveys;
 }; 
 // ******* fin de vieux fonction *******
@@ -32,8 +32,8 @@
   //       // Si l'utilisateur a le rôle d'admin ou de user, j'autorise la récupération de tous les sondages
 
   //       if (auth.role === 'admin' || (survey.user_id == req.auth.id)) {
-  //         const [surveys, err] = await db.query("SELECT * FROM surveyResponses");
-  //         if (err) {
+    // const [surveys, err] = await db.query("SELECT * FROM surveyResponses ORDER BY submitted_date DESC");
+          // if (err) {
   //           throw new Error(err);
   //         }
   //         return surveys;

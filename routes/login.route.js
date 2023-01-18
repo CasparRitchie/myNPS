@@ -39,7 +39,6 @@ router.route('/')
       // Return du JWT au client
       res.status(200).json({
         access_token: token,
-        role: user.role
       });
     }
   });

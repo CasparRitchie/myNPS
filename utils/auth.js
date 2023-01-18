@@ -5,6 +5,7 @@ const isAuth = () => {
     return (req, res, next) => {
         // je lis les headers
         const header = req.headers.authorization;
+        console.log(req.headers.authorization);
 
         if (!header) {
             res.status(401).json({message: "You need to be logged in to see this page"});
@@ -19,6 +20,7 @@ const isAuth = () => {
             } else {
                 //je rajoute les données utilisateurs du token décode dans le request
                 req.auth = decodedToken;
+                console.log(decodedToken);
 // next = je permet de passer à la suite de la requete
                 next();
             }
@@ -38,7 +40,7 @@ const header = req.headers.authorization;
         // On récupère le token d'accès contenu dans l'en-tête "Authorization".
         const access_token =  header.split(" ")[1];
         // On utilise la fonction "verify" de l'objet JWT pour vérifier la validité du token.
-        jwt.varify(access_token, config.jwtPass, (err, decodedToken) => {
+        jwt.verify(access_token, config.jwtPass, (err, decodedToken) => {
         // Si le token est invalide, on renvoie une erreur 401 (non autorisé).
             if (err) {
                 res.status(401).json({message: "Invalid JWT"});
