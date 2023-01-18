@@ -43,17 +43,12 @@ router.route('/')
         const survey = await surveyController.getById(req.params.id);
         // Si aucune enquête n'a été trouvée
         if (!survey) {
-            // Avec cet identifiant, la fonction renvoie null, ce qui déclenche l'envoi d'une erreur 404.
             res.status(404).json();
         }
-        // Si l'utilisateur n'est pas administrateur et que l'ID de l'utilisateur dans l'enquête ne correspond pas à l'ID de l'utilisateur connecté, renvoie un statut 403 avec un message d'erreur
-        if (req.auth.role != "admin" && (survey.id_users_submit_survey != req.auth.id)) {
-        res.status(403).json({message: "This isn't your survey"});
-        } else {
         // Si l'enquête est trouvée et que l'utilisateur a les droits d'accès, renvoie un statut 200 avec l'enquête
             res.status(200).json(survey);
         }
-    })
+    )
 // Supprime l'enquête en fonction de son ID
 .delete(async (req, res) => {
     // Appelle la fonction remove du controlleur de l'enquête avec l'ID de l'enquête récupéré dans l'URL

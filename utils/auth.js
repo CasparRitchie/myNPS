@@ -5,7 +5,7 @@ const isAuth = () => {
     return (req, res, next) => {
         // je lis les headers
         const header = req.headers.authorization;
-        console.log(req.headers.authorization);
+        console.log(header);
 
         if (!header) {
             res.status(401).json({message: "You need to be logged in to see this page"});
@@ -20,7 +20,6 @@ const isAuth = () => {
             } else {
                 //je rajoute les données utilisateurs du token décode dans le request
                 req.auth = decodedToken;
-                console.log(decodedToken);
 // next = je permet de passer à la suite de la requete
                 next();
             }
