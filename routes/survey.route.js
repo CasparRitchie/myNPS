@@ -15,15 +15,23 @@ const router = express.Router();
 // PUT / PATCH = update
 router.route('/')
 .get(async (req, res) => {
-    // Récupération de toutes les enquêtes auprès du contrôleur des enquêtes
     const surveys = await surveyController.getAll();
-    // Si aucune enquête n'est trouvée, renvoie d'une réponse 404
     if (!surveys) {
         res.status(404).json();
     }
-    // Renvoie d'une réponse 200 avec les enquêtes trouvées
-    res.status(200).json(surveys);
+        res.status(200).json(surveys);
 })
+
+// .get(async (req, res) => {
+//     // Récupération de toutes les enquêtes auprès du contrôleur des enquêtes
+//     const surveys = await surveyController.getAll();
+//     // Si aucune enquête n'est trouvée, renvoie d'une réponse 404
+//     if (!surveys) {
+//         res.status(404).json();
+//     }
+//     // Renvoie d'une réponse 200 avec les enquêtes trouvées
+//     res.status(200).json(surveys);
+// })
         // Création d'une nouvelle enquête
     .post(async (req, res) => {
         const new_survey = await surveyController.add(req.body);
@@ -41,7 +49,7 @@ router.route('/')
     // Methode HTTP GET pour cette requete Récupération d'une enquête spécifique en fonction de son identifiant
     .get(authValidator.isAuth(), async (req, res) => {
         const survey = await surveyController.getById(req.params.id);
-        if (req.auth.role != "admin" && (survey.user_id != req.auth.id)) {
+        if (req.auth.role != "admin" && (survey.id_users_submit_survey != req.auth.id)) {
             res.status(403).json({message: "C'est pas ton sondage"});
             // Si aucune enquête n'a été trouvée
         } else if (!survey) {

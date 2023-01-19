@@ -99,7 +99,7 @@ const getByEmailAndPassword = async (data) => {
     // On récupère l'utilisateur correspondant à l'adresse email donnée
     const user = await getByEmail(data);
     // Si aucun utilisateur n'est trouvé, on retourne null
-    console.log('/*****/')
+    console.log('/***get by email and password triggered - getByEmail data to follow**/')
     console.log(data)
     console.log('/*****/')
     if (!user) {

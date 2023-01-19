@@ -28,7 +28,6 @@ router.route('/')
     if (!user) {
       res.status(401).json({message: "Hmm that doesn't seem to be the right username & password combination"});
     } else {
-
       // si user trouvé, creation d'un JWT contenant  email, role, et ID du user
       const token = jwt.sign({
         id: user.id,
@@ -37,10 +36,10 @@ router.route('/')
       }, config.jwtPass, {expiresIn: config.jwtExpireLength});
 
       // Return du JWT au client
-      res.status(200).json({
-        access_token: token,
-        // role: user.role,
+      res.json({
+        access_token: token
       });
     }
-  });
+  })
+;
 module.exports = router;

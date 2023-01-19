@@ -5,7 +5,7 @@ const isAuth = () => {
     return (req, res, next) => {
         // je lis les headers
         const header = req.headers.authorization;
-
+        console.log(header);
         if (!header) {
             res.status(401).json({message: "You need to be logged in to see this page"});
         }
@@ -40,7 +40,7 @@ const header = req.headers.authorization;
             res.status(401).json({message: "You need to be connected to do this"});
         }
         // On récupère le token d'accès contenu dans l'en-tête "Authorization".
-        console.log("***header info upcoming***");
+        console.log("***unable to split header***");
         console.log(header);
         const access_token = header.split(" ")[1];
         // On utilise la fonction "verify" de l'objet JWT pour vérifier la validité du token.
